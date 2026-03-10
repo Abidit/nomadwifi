@@ -9,14 +9,12 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://nomadwifi.vercel.app'),
   title: 'NomadWifi — Fast Wifi Spots for Digital Nomads Worldwide',
   description: 'Crowdsourced map of wifi spots for digital nomads and remote workers. Find cafes and coworking spaces with fast internet and power backup in Kathmandu, Bali, Lisbon and beyond.',
-  keywords: ['digital nomad', 'wifi map', 'remote work', 'coworking', 'fast wifi', 'nomad wifi', 'Kathmandu wifi', 'work from cafe'],
-  authors: [{ name: 'NomadWifi' }],
-  creator: 'NomadWifi',
+  keywords: ['digital nomad', 'wifi map', 'remote work', 'coworking', 'fast wifi', 'nomad wifi', 'Kathmandu wifi'],
   openGraph: {
     type: 'website',
     url: 'https://nomadwifi.vercel.app',
-    title: 'NomadWifi — Find Fast Wifi for Digital Nomads',
-    description: 'Crowdsourced map of wifi spots worldwide. Find fast internet and power backup for remote work.',
+    title: 'NomadWifi — Fast Wifi Spots for Digital Nomads Worldwide',
+    description: 'Crowdsourced map of wifi spots for digital nomads and remote workers. Find cafes and coworking spaces with fast internet and power backup in Kathmandu, Bali, Lisbon and beyond.',
     siteName: 'NomadWifi',
     images: [{
       url: 'https://nomadwifi.vercel.app/og-image.png',
@@ -27,8 +25,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'NomadWifi — Find Fast Wifi for Digital Nomads',
-    description: 'Crowdsourced map of wifi spots worldwide for remote workers.',
+    title: 'NomadWifi — Fast Wifi Spots for Digital Nomads Worldwide',
+    description: 'Crowdsourced map of wifi spots for digital nomads and remote workers. Find cafes and coworking spaces with fast internet and power backup in Kathmandu, Bali, Lisbon and beyond.',
     images: ['https://nomadwifi.vercel.app/og-image.png'],
   },
   icons: {
