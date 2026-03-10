@@ -77,7 +77,12 @@ export default function AddSpotForm({ isOpen, onClose, lat, lng, onSpotAdded }: 
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => { if (!open) handleClose() }}>
-      <SheetContent side="right" className="w-full max-w-md overflow-y-auto p-0" showCloseButton={false}>
+      <SheetContent
+        side="right"
+        className="fixed right-0 top-0 h-full w-full max-w-md z-[2000] shadow-2xl overflow-y-auto p-0"
+        style={{ position: 'fixed' }}
+        showCloseButton={false}
+      >
         <div className="border-t-4 border-[#00A699]" />
         <SheetHeader className="px-6 pt-6 pb-2">
           <SheetTitle className="text-xl font-semibold text-[#222222]">Add a wifi spot</SheetTitle>
