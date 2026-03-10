@@ -79,40 +79,34 @@ export default function HomePage() {
         isAddingMode={isAddingMode}
       />
 
-      {/* Filter bar — floating top center */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50">
-        <FilterBar onFilterChange={handleFilterChange} />
-      </div>
+      {/* Filter bar — fixed top center */}
+      <FilterBar onFilterChange={handleFilterChange} className="fixed top-20 left-1/2 -translate-x-1/2 z-50" />
 
-      {/* Spot count — floating top left */}
-      <div className="absolute top-4 left-4 z-50">
-        <div className="bg-white rounded-full shadow-sm px-4 py-2 text-sm border border-[#ebebeb]">
-          <span className="font-semibold text-[#222222]">{filteredSpots.length}</span>
-          <span className="text-[#717171] ml-1">spots found</span>
-        </div>
+      {/* Spot count — fixed top left */}
+      <div className="fixed top-20 left-4 z-50 bg-white rounded-full shadow-md px-4 py-2 text-sm font-medium text-[#222222] border border-[#ebebeb]">
+        <span className="font-semibold">{filteredSpots.length}</span>
+        <span className="text-[#717171] ml-1">spots found</span>
       </div>
 
       {/* Selected spot card — floating bottom left */}
       {selectedSpot && (
-        <div className="absolute bottom-8 left-4 z-50">
+        <div className="fixed bottom-8 left-4 z-50">
           <SpotCard spot={selectedSpot} onClose={() => setSelectedSpot(null)} />
         </div>
       )}
 
-      {/* Add spot FAB — floating bottom right */}
-      <div className="absolute bottom-8 right-4 z-50">
-        <button
-          onClick={handleAddSpot}
-          className="bg-[#00A699] hover:bg-[#008F84] text-white rounded-full shadow-lg px-6 py-3 flex items-center gap-2 font-medium transition-all"
-        >
-          <Plus size={18} />
-          Add a spot
-        </button>
-      </div>
+      {/* Add spot FAB — fixed bottom right */}
+      <button
+        onClick={handleAddSpot}
+        className="fixed bottom-8 right-8 z-50 bg-[#00A699] hover:bg-[#008F84] text-white rounded-full shadow-lg px-6 py-3 flex items-center gap-2 font-medium transition-all"
+      >
+        <Plus size={18} />
+        Add a spot
+      </button>
 
       {/* Adding mode instruction banner */}
       {isAddingMode && (
-        <div className="absolute top-16 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
           <div className="bg-[#00A699] text-white rounded-xl shadow-lg px-5 py-3 flex items-center gap-3 text-sm font-medium pointer-events-auto">
             <span>📍 Click anywhere on the map to place your spot</span>
             <button

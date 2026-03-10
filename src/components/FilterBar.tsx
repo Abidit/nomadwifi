@@ -5,6 +5,7 @@ import type { WifiSpeed } from '@/types/spot'
 
 interface FilterBarProps {
   onFilterChange: (speed: WifiSpeed | 'all', powerOnly: boolean) => void
+  className?: string
 }
 
 const SPEEDS: Array<{ value: WifiSpeed | 'all'; label: string }> = [
@@ -14,7 +15,7 @@ const SPEEDS: Array<{ value: WifiSpeed | 'all'; label: string }> = [
   { value: 'fast', label: 'Fast' },
 ]
 
-export default function FilterBar({ onFilterChange }: FilterBarProps) {
+export default function FilterBar({ onFilterChange, className }: FilterBarProps) {
   const [activeSpeed, setActiveSpeed] = useState<WifiSpeed | 'all'>('all')
   const [powerOnly, setPowerOnly] = useState(false)
 
@@ -30,7 +31,7 @@ export default function FilterBar({ onFilterChange }: FilterBarProps) {
   }
 
   return (
-    <div className="bg-white rounded-full shadow-md px-2 py-1.5 flex items-center gap-1 border border-[#ebebeb]">
+    <div className={`bg-white rounded-full shadow-md px-2 py-1.5 flex items-center gap-1 border border-[#ebebeb]${className ? ` ${className}` : ''}`}>
       {SPEEDS.map((s) => (
         <button
           key={s.value}
