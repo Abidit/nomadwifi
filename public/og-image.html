@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px; height: 630px;
+    background: white;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .bg-dots {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, #ebebeb 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+  .content {
+    position: relative; z-index: 1;
+    text-align: center; padding: 60px;
+  }
+  .logo {
+    display: flex; align-items: center;
+    justify-content: center; gap: 12px; margin-bottom: 24px;
+  }
+  .logo-icon {
+    width: 56px; height: 56px; background: #00A699;
+    border-radius: 14px; display: flex;
+    align-items: center; justify-content: center;
+    font-size: 28px;
+  }
+  .logo-text { font-size: 48px; font-weight: 700; color: #222222; }
+  .tagline { font-size: 24px; color: #717171; margin-bottom: 40px; }
+  .badges { display: flex; gap: 12px; justify-content: center; }
+  .badge {
+    padding: 8px 20px; border-radius: 999px;
+    font-size: 16px; font-weight: 500;
+    border: 1px solid #ebebeb; background: white;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .fast { color: #00A699; border-color: #00A699; background: #f0fffe; }
+  .medium { color: #FFB400; border-color: #FFB400; background: #fffbf0; }
+  .slow { color: #FF5A5F; border-color: #FF5A5F; background: #fff5f5; }
+  .url {
+    margin-top: 40px; font-size: 18px; color: #717171;
+    background: #f7f7f7; padding: 8px 24px;
+    border-radius: 999px; display: inline-block;
+  }
+</style>
+</head>
+<body>
+  <div class="bg-dots"></div>
+  <div class="content">
+    <div class="logo">
+      <div class="logo-icon">📶</div>
+      <div class="logo-text">NomadWifi</div>
+    </div>
+    <div class="tagline">Crowdsourced wifi map for digital nomads worldwide</div>
+    <div class="badges">
+      <div class="badge fast">🟢 Fast spots</div>
+      <div class="badge medium">🟡 Medium spots</div>
+      <div class="badge slow">🔴 Slow spots</div>
+    </div>
+    <div class="url">nomadwifi.vercel.app</div>
+  </div>
+</body>
+</html>
