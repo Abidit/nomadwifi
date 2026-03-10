@@ -37,7 +37,7 @@ export default function HomePage() {
       .select('*')
       .order('created_at', { ascending: false })
     if (error) console.error('Supabase error:', error)
-    console.log('spots loaded:', data)
+    console.log('spots with upvotes:', data)
     if (data) setSpots(data as Spot[])
   }, [])
 
@@ -103,6 +103,10 @@ export default function HomePage() {
     setIsAddingMode(false)
   }, [fetchSpots])
 
+  const handleUpvote = useCallback((spotId: string) => {
+    setSpots((prev) => prev.map((s) => s.id === spotId ? { ...s, upvotes: s.upvotes + 1 } : s))
+  }, [])
+
   return (
     <>
       {/* Full-screen map — fixed, never affected by sibling layout */}
@@ -137,7 +141,7 @@ export default function HomePage() {
       {/* Selected spot card */}
       {selectedSpot && (
         <div className="fixed bottom-8 left-4 z-[1000]">
-          <SpotCard spot={selectedSpot} onClose={() => setSelectedSpot(null)} />
+          <SpotCard spot={selectedSpot} onClose={() => setSelectedSpot(null)} onUpvote={handleUpvote} />
         </div>
       )}
 

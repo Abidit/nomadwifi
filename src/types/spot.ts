@@ -8,6 +8,7 @@ export interface Spot {
   lng: number
   wifi_speed: WifiSpeed
   power_backup: boolean
+  upvotes: number
   city?: string
   country?: string
   created_at: string

@@ -1,9 +1,14 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import { MapPin, X } from 'lucide-react'
+import { supabase } from '@/lib/supabase'
 import type { Spot } from '@/types/spot'
 
 interface SpotCardProps {
   spot: Spot
   onClose: () => void
+  onUpvote: (spotId: string) => void
 }
 
 function getRelativeTime(dateString: string): string {
@@ -23,9 +28,40 @@ const SPEED_CONFIG = {
   fast: { label: 'Fast wifi', className: 'bg-teal-50 text-teal-600' },
 }
 
-export default function SpotCard({ spot, onClose }: SpotCardProps) {
+export default function SpotCard({ spot, onClose, onUpvote }: SpotCardProps) {
   const speed = SPEED_CONFIG[spot.wifi_speed]
   const location = [spot.city, spot.country].filter(Boolean).join(', ')
+  const [hasVoted, setHasVoted] = useState(false)
+  const [localUpvotes, setLocalUpvotes] = useState(spot.upvotes || 0)
+
+  useEffect(() => {
+    setHasVoted(localStorage.getItem(`voted_${spot.id}`) === 'true')
+  }, [spot.id])
+
+  useEffect(() => {
+    setLocalUpvotes(spot.upvotes || 0)
+  }, [spot.upvotes])
+
+  const handleUpvote = async () => {
+    if (hasVoted) return
+
+    // Optimistic update
+    setHasVoted(true)
+    setLocalUpvotes((prev) => prev + 1)
+    localStorage.setItem(`voted_${spot.id}`, 'true')
+
+    const { error } = await supabase.rpc('increment_upvotes', { spot_id: spot.id })
+
+    if (error) {
+      console.error('Upvote RPC error:', error)
+      // Rollback
+      setHasVoted(false)
+      setLocalUpvotes((prev) => prev - 1)
+      localStorage.removeItem(`voted_${spot.id}`)
+    } else {
+      onUpvote?.(spot.id)
+    }
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-5 w-72 border border-[#ebebeb]">
@@ -66,6 +102,23 @@ export default function SpotCard({ spot, onClose }: SpotCardProps) {
       )}
 
       <p className="text-xs text-[#717171] mt-3">Added {getRelativeTime(spot.created_at)}</p>
+
+      <div className="h-px bg-[#ebebeb] mt-3 mb-3" />
+
+      <div className="flex items-center justify-between">
+        <span className="text-xs text-[#717171]">👍 Helpful?</span>
+        <button
+          onClick={handleUpvote}
+          disabled={hasVoted}
+          className={`rounded-full px-3 py-1 text-sm flex items-center gap-1 transition-all ${
+            hasVoted
+              ? 'border border-[#00A699] bg-teal-50 text-[#00A699]'
+              : 'border border-[#ebebeb] text-[#717171] hover:border-[#00A699] hover:text-[#00A699]'
+          }`}
+        >
+          👍 {localUpvotes}
+        </button>
+      </div>
     </div>
   )
 }
