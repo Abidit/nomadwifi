@@ -1,9 +1,13 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react'
 import 'leaflet/dist/leaflet.css'
 import type { Map as LeafletMap, Marker } from 'leaflet'
 import type { Spot } from '@/types/spot'
+
+export interface MapHandle {
+  flyTo: (lat: number, lng: number, zoom?: number) => void
+}
 
 interface MapProps {
   spots: Spot[]
@@ -23,7 +27,10 @@ function markerHtml(speed: string): string {
   return `<div style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:white;border:2.5px solid ${color};border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.18);"><div style="width:12px;height:12px;background:${color};border-radius:50%;"></div></div>`
 }
 
-export default function Map({ spots, onMapClick, onSpotClick, isAddingMode }: MapProps) {
+const Map = forwardRef<MapHandle, MapProps>(function Map(
+  { spots, onMapClick, onSpotClick, isAddingMode },
+  ref
+) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<LeafletMap | null>(null)
   const markersRef = useRef<Record<string, Marker>>({})
@@ -37,6 +44,13 @@ export default function Map({ spots, onMapClick, onSpotClick, isAddingMode }: Ma
   useEffect(() => { onMapClickRef.current = onMapClick }, [onMapClick])
   useEffect(() => { onSpotClickRef.current = onSpotClick }, [onSpotClick])
   useEffect(() => { isAddingModeRef.current = isAddingMode }, [isAddingMode])
+
+  // Expose flyTo to parent via ref
+  useImperativeHandle(ref, () => ({
+    flyTo: (lat, lng, zoom = 12) => {
+      mapRef.current?.flyTo([lat, lng], zoom, { animate: true, duration: 1.2 })
+    },
+  }), [])
 
   // Initialize map once
   useEffect(() => {
@@ -138,4 +152,6 @@ export default function Map({ spots, onMapClick, onSpotClick, isAddingMode }: Ma
       <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
     </div>
   )
-}
+})
+
+export default Map
