@@ -48,13 +48,20 @@ export default function Map({ spots, onMapClick, onSpotClick, isAddingMode }: Ma
       const L = (await import('leaflet')).default
       if (cancelled || !containerRef.current) return
 
-      const map = L.map(containerRef.current, { center: [20, 0], zoom: 2 })
+      const map = L.map(containerRef.current, {
+        center: [20, 0],
+        zoom: 2,
+        worldCopyJump: false,
+        maxBounds: [[-90, -180], [90, 180]],
+        maxBoundsViscosity: 1.0,
+      })
 
       L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
         subdomains: 'abcd',
         maxZoom: 20,
+        noWrap: true,
       }).addTo(map)
 
       map.on('click', async (e) => {

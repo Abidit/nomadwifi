@@ -25,10 +25,12 @@ export default function HomePage() {
   const [powerFilter, setPowerFilter] = useState(false)
 
   const fetchSpots = useCallback(async () => {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('spots')
       .select('*')
       .order('created_at', { ascending: false })
+    if (error) console.error('Supabase error:', error)
+    console.log('spots loaded:', data)
     if (data) setSpots(data as Spot[])
   }, [])
 
@@ -70,7 +72,7 @@ export default function HomePage() {
   }
 
   return (
-    <main className="relative w-full h-[calc(100vh-4rem)]">
+    <main className="relative w-full" style={{ height: 'calc(100vh - 64px)' }}>
       {/* Full-screen map */}
       <Map
         spots={filteredSpots}
@@ -80,17 +82,19 @@ export default function HomePage() {
       />
 
       {/* Filter bar — fixed top center */}
-      <FilterBar onFilterChange={handleFilterChange} className="fixed top-20 left-1/2 -translate-x-1/2 z-50" />
+      <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[1000]">
+        <FilterBar onFilterChange={handleFilterChange} />
+      </div>
 
       {/* Spot count — fixed top left */}
-      <div className="fixed top-20 left-4 z-50 bg-white rounded-full shadow-md px-4 py-2 text-sm font-medium text-[#222222] border border-[#ebebeb]">
+      <div className="fixed top-20 left-4 z-[1000] bg-white rounded-full shadow-md px-4 py-2 text-sm font-medium text-[#222222] border border-[#ebebeb]">
         <span className="font-semibold">{filteredSpots.length}</span>
         <span className="text-[#717171] ml-1">spots found</span>
       </div>
 
       {/* Selected spot card — floating bottom left */}
       {selectedSpot && (
-        <div className="fixed bottom-8 left-4 z-50">
+        <div className="fixed bottom-8 left-4 z-[1000]">
           <SpotCard spot={selectedSpot} onClose={() => setSelectedSpot(null)} />
         </div>
       )}
@@ -98,15 +102,15 @@ export default function HomePage() {
       {/* Add spot FAB — fixed bottom right */}
       <button
         onClick={handleAddSpot}
-        className="fixed bottom-8 right-8 z-50 bg-[#00A699] hover:bg-[#008F84] text-white rounded-full shadow-lg px-6 py-3 flex items-center gap-2 font-medium transition-all"
+        className="fixed bottom-8 right-8 z-[1000] bg-[#00A699] hover:bg-[#008F84] text-white rounded-full shadow-lg px-6 py-3 flex items-center gap-2 font-medium transition-all text-sm"
       >
-        <Plus size={18} />
+        <Plus size={16} />
         Add a spot
       </button>
 
       {/* Adding mode instruction banner */}
       {isAddingMode && (
-        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none">
           <div className="bg-[#00A699] text-white rounded-xl shadow-lg px-5 py-3 flex items-center gap-3 text-sm font-medium pointer-events-auto">
             <span>📍 Click anywhere on the map to place your spot</span>
             <button
