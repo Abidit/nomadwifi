@@ -7,8 +7,8 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://nomadwifi.vercel.app'),
-  title: 'NomadWifi — Find Fast Wifi & Coworking Spots for Digital Nomads',
-  description: 'Crowdsourced map of wifi spots for digital nomads worldwide. Discover cafes and coworking spaces with fast internet, power backup, and nomad-friendly vibes in Kathmandu, Bali, Lisbon, and beyond.',
+  title: 'NomadWifi — Fast Wifi Spots for Digital Nomads Worldwide',
+  description: 'Crowdsourced map of wifi spots for digital nomads and remote workers. Find cafes and coworking spaces with fast internet and power backup in Kathmandu, Bali, Lisbon and beyond.',
   keywords: ['digital nomad', 'wifi map', 'remote work', 'coworking', 'fast wifi', 'nomad wifi', 'Kathmandu wifi', 'work from cafe'],
   authors: [{ name: 'NomadWifi' }],
   creator: 'NomadWifi',
