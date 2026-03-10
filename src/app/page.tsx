@@ -67,82 +67,87 @@ export default function HomePage() {
 
   const handleFormClose = () => {
     setIsFormOpen(false)
+    setIsAddingMode(false)
     setPendingLat(null)
     setPendingLng(null)
   }
 
+  const handleSpotAdded = useCallback(() => {
+    fetchSpots()
+    setIsFormOpen(false)
+    setIsAddingMode(false)
+  }, [fetchSpots])
+
   return (
-    <div className="relative h-screen w-screen overflow-hidden">
-      <main className="relative w-full flex-1 overflow-hidden" style={{ height: 'calc(100vh - 64px)', marginTop: '64px' }}>
-        {/* Full-screen map */}
-        <div className="absolute inset-0">
-          <Map
-            spots={filteredSpots}
-            onMapClick={handleMapClick}
-            onSpotClick={handleSpotClick}
-            isAddingMode={isAddingMode}
-          />
-        </div>
+    <>
+      {/* Full-screen map — fixed, never affected by sibling layout */}
+      <div className="fixed left-0 right-0 bottom-0 top-16 z-0">
+        <Map
+          spots={filteredSpots}
+          onMapClick={handleMapClick}
+          onSpotClick={handleSpotClick}
+          isAddingMode={isAddingMode}
+        />
+      </div>
 
-        {/* Filter bar — fixed top center */}
-        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[1000]">
-          <FilterBar onFilterChange={handleFilterChange} />
-        </div>
+      {/* Filter bar */}
+      <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[1000]">
+        <FilterBar onFilterChange={handleFilterChange} />
+      </div>
 
-        {/* Spot count — fixed top left */}
-        <div className="fixed top-20 left-4 z-[1000] bg-white rounded-full shadow-md px-4 py-2 text-sm font-medium text-[#222222] border border-[#ebebeb]">
-          <span className="font-semibold">{filteredSpots.length}</span>
-          <span className="text-[#717171] ml-1">spots found</span>
-        </div>
+      {/* Spot count */}
+      <div className="fixed top-20 left-4 z-[1000] bg-white rounded-full shadow-md px-4 py-2 text-sm font-medium text-[#222222] border border-[#ebebeb]">
+        {filteredSpots.length} spots found
+      </div>
 
-        {/* Selected spot card — floating bottom left */}
-        {selectedSpot && (
-          <div className="fixed bottom-8 left-4 z-[1000]">
-            <SpotCard spot={selectedSpot} onClose={() => setSelectedSpot(null)} />
+      {/* Selected spot card */}
+      {selectedSpot && (
+        <div className="fixed bottom-8 left-4 z-[1000]">
+          <SpotCard spot={selectedSpot} onClose={() => setSelectedSpot(null)} />
+        </div>
+      )}
+
+      {/* Adding mode banner */}
+      {isAddingMode && (
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[1000] mt-14">
+          <div className="bg-[#00A699] text-white rounded-full px-6 py-2 text-sm font-medium shadow-lg flex items-center gap-2">
+            📍 Click anywhere on the map to place your spot
+            <button
+              onClick={() => setIsAddingMode(false)}
+              className="ml-2 underline text-white/80 hover:text-white"
+            >
+              Cancel
+            </button>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Add spot FAB — fixed bottom right */}
+      {/* FAB */}
+      <div className="fixed bottom-8 right-8 z-[1000]">
         <button
           onClick={handleAddSpot}
-          className="fixed bottom-8 right-8 z-[1000] bg-[#00A699] hover:bg-[#008F84] text-white rounded-full shadow-lg px-6 py-3 flex items-center gap-2 font-medium transition-all text-sm"
+          className="bg-[#00A699] hover:bg-[#008F84] text-white rounded-full shadow-lg px-6 py-3 flex items-center gap-2 font-medium transition-all text-sm"
         >
-          <Plus size={16} />
-          Add a spot
+          <Plus size={16} /> Add a spot
         </button>
+      </div>
 
-        {/* Adding mode instruction banner */}
-        {isAddingMode && (
-          <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none">
-            <div className="bg-[#00A699] text-white rounded-xl shadow-lg px-5 py-3 flex items-center gap-3 text-sm font-medium pointer-events-auto">
-              <span>📍 Click anywhere on the map to place your spot</span>
-              <button
-                onClick={() => setIsAddingMode(false)}
-                className="bg-white/20 hover:bg-white/30 rounded-lg px-3 py-1 text-sm transition-colors"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        )}
-      </main>
-
-      {/* Backdrop overlay */}
+      {/* Backdrop */}
       {isFormOpen && (
         <div
           className="fixed inset-0 bg-black/20 z-[1999]"
-          onClick={() => setIsFormOpen(false)}
+          onClick={handleFormClose}
         />
       )}
 
-      {/* Sheet — outside map container so it overlays without pushing layout */}
+      {/* Form — always last, always fixed */}
       <AddSpotForm
         isOpen={isFormOpen}
         onClose={handleFormClose}
         lat={pendingLat}
         lng={pendingLng}
-        onSpotAdded={fetchSpots}
+        onSpotAdded={handleSpotAdded}
       />
-    </div>
+    </>
   )
 }

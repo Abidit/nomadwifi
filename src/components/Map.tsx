@@ -133,5 +133,9 @@ export default function Map({ spots, onMapClick, onSpotClick, isAddingMode }: Ma
     }
   }, [isAddingMode])
 
-  return <div ref={containerRef} className="w-full h-full" />
+  return (
+    <div style={{ width: '100%', height: '100%', margin: 0, padding: 0 }}>
+      <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
+    </div>
+  )
 }
