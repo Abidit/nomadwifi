@@ -1,65 +1,137 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import dynamic from 'next/dynamic'
+import { useEffect, useState, useCallback } from 'react'
+import { Plus } from 'lucide-react'
+import { supabase } from '@/lib/supabase'
+import type { Spot, WifiSpeed } from '@/types/spot'
+import SpotCard from '@/components/SpotCard'
+import FilterBar from '@/components/FilterBar'
+import AddSpotForm from '@/components/AddSpotForm'
+
+const Map = dynamic(() => import('@/components/Map'), {
+  ssr: false,
+  loading: () => <div className="w-full h-full bg-[#f7f7f7] animate-pulse" />,
+})
+
+export default function HomePage() {
+  const [spots, setSpots] = useState<Spot[]>([])
+  const [selectedSpot, setSelectedSpot] = useState<Spot | null>(null)
+  const [isAddingMode, setIsAddingMode] = useState(false)
+  const [isFormOpen, setIsFormOpen] = useState(false)
+  const [pendingLat, setPendingLat] = useState<number | null>(null)
+  const [pendingLng, setPendingLng] = useState<number | null>(null)
+  const [speedFilter, setSpeedFilter] = useState<WifiSpeed | 'all'>('all')
+  const [powerFilter, setPowerFilter] = useState(false)
+
+  const fetchSpots = useCallback(async () => {
+    const { data } = await supabase
+      .from('spots')
+      .select('*')
+      .order('created_at', { ascending: false })
+    if (data) setSpots(data as Spot[])
+  }, [])
+
+  useEffect(() => {
+    fetchSpots()
+  }, [fetchSpots])
+
+  const filteredSpots = spots.filter((spot) => {
+    if (speedFilter !== 'all' && spot.wifi_speed !== speedFilter) return false
+    if (powerFilter && !spot.power_backup) return false
+    return true
+  })
+
+  const handleFilterChange = useCallback((speed: WifiSpeed | 'all', powerOnly: boolean) => {
+    setSpeedFilter(speed)
+    setPowerFilter(powerOnly)
+  }, [])
+
+  const handleAddSpot = () => {
+    setSelectedSpot(null)
+    setIsAddingMode(true)
+  }
+
+  const handleMapClick = useCallback((lat: number, lng: number) => {
+    setPendingLat(lat)
+    setPendingLng(lng)
+    setIsAddingMode(false)
+    setIsFormOpen(true)
+  }, [])
+
+  const handleSpotClick = useCallback((spot: Spot) => {
+    setSelectedSpot(spot)
+  }, [])
+
+  const handleFormClose = () => {
+    setIsFormOpen(false)
+    setPendingLat(null)
+    setPendingLng(null)
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="relative w-full h-[calc(100vh-4rem)]">
+      {/* Full-screen map */}
+      <Map
+        spots={filteredSpots}
+        onMapClick={handleMapClick}
+        onSpotClick={handleSpotClick}
+        isAddingMode={isAddingMode}
+      />
+
+      {/* Filter bar — floating top center */}
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50">
+        <FilterBar onFilterChange={handleFilterChange} />
+      </div>
+
+      {/* Spot count — floating top left */}
+      <div className="absolute top-4 left-4 z-50">
+        <div className="bg-white rounded-full shadow-sm px-4 py-2 text-sm border border-[#ebebeb]">
+          <span className="font-semibold text-[#222222]">{filteredSpots.length}</span>
+          <span className="text-[#717171] ml-1">spots found</span>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </div>
+
+      {/* Selected spot card — floating bottom left */}
+      {selectedSpot && (
+        <div className="absolute bottom-8 left-4 z-50">
+          <SpotCard spot={selectedSpot} onClose={() => setSelectedSpot(null)} />
         </div>
-      </main>
-    </div>
-  );
+      )}
+
+      {/* Add spot FAB — floating bottom right */}
+      <div className="absolute bottom-8 right-4 z-50">
+        <button
+          onClick={handleAddSpot}
+          className="bg-[#00A699] hover:bg-[#008F84] text-white rounded-full shadow-lg px-6 py-3 flex items-center gap-2 font-medium transition-all"
+        >
+          <Plus size={18} />
+          Add a spot
+        </button>
+      </div>
+
+      {/* Adding mode instruction banner */}
+      {isAddingMode && (
+        <div className="absolute top-16 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
+          <div className="bg-[#00A699] text-white rounded-xl shadow-lg px-5 py-3 flex items-center gap-3 text-sm font-medium pointer-events-auto">
+            <span>📍 Click anywhere on the map to place your spot</span>
+            <button
+              onClick={() => setIsAddingMode(false)}
+              className="bg-white/20 hover:bg-white/30 rounded-lg px-3 py-1 text-sm transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      <AddSpotForm
+        isOpen={isFormOpen}
+        onClose={handleFormClose}
+        lat={pendingLat}
+        lng={pendingLng}
+        onSpotAdded={fetchSpots}
+      />
+    </main>
+  )
 }
