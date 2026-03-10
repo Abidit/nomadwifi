@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { Wifi, Plus } from 'lucide-react'
+import { Wifi } from 'lucide-react'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
@@ -22,10 +22,7 @@ export default function RootLayout({
             <Wifi size={20} className="text-[#00A699]" />
             <span className="font-bold text-[#222222] text-lg tracking-tight">NomadWifi</span>
           </div>
-          <button className="flex items-center gap-1.5 text-sm text-[#222222] border border-[#ebebeb] rounded-full px-4 py-2 hover:bg-[#f7f7f7] transition-colors">
-            <Plus size={14} />
-            Add a spot
-          </button>
+          <span className="text-sm text-[#717171]">Find wifi spots worldwide</span>
         </header>
         {children}
       </body>

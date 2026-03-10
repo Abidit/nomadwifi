@@ -13,13 +13,6 @@ import {
 } from '@/components/ui/sheet'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 
 interface AddSpotFormProps {
   isOpen: boolean
@@ -127,31 +120,15 @@ export default function AddSpotForm({ isOpen, onClose, lat, lng, onSpotAdded }: 
             <Label className="text-sm font-medium text-[#222222]">
               Wifi Speed <span className="text-red-400">*</span>
             </Label>
-            <Select value={wifiSpeed} onValueChange={(v) => setWifiSpeed(v as WifiSpeed)}>
-              <SelectTrigger className="w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="slow">
-                  <span className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#FF5A5F] inline-block" />
-                    Slow
-                  </span>
-                </SelectItem>
-                <SelectItem value="medium">
-                  <span className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#FFB400] inline-block" />
-                    Medium
-                  </span>
-                </SelectItem>
-                <SelectItem value="fast">
-                  <span className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#00A699] inline-block" />
-                    Fast
-                  </span>
-                </SelectItem>
-              </SelectContent>
-            </Select>
+            <select
+              value={wifiSpeed}
+              onChange={(e) => setWifiSpeed(e.target.value as WifiSpeed)}
+              className="w-full h-10 px-3 rounded-lg border border-[#ebebeb] bg-white text-[#222222] text-sm focus:outline-none focus:ring-2 focus:ring-[#00A699] cursor-pointer"
+            >
+              <option value="slow">🔴 Slow</option>
+              <option value="medium">🟡 Medium</option>
+              <option value="fast">🟢 Fast</option>
+            </select>
           </div>
 
           <div className="space-y-1.5">
