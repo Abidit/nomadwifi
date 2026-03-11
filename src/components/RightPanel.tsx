@@ -40,20 +40,20 @@ export default function RightPanel({
       className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
         activeTab === tab
           ? 'bg-[#00A699] text-white'
-          : 'hover:bg-[var(--app-surface)]'
+          : 'hover:bg-[var(--bg)]'
       }`}
-      style={activeTab !== tab ? { color: 'var(--app-text-muted)' } : {}}
+      style={activeTab !== tab ? { color: 'var(--text-secondary)' } : {}}
     >
       {label}
     </button>
   )
 
   const panelContent = (
-    <div className="flex flex-col h-full" style={{ background: 'var(--app-sidebar)' }}>
+    <div className="flex flex-col h-full" style={{ background: 'var(--panel-bg)' }}>
       {/* Tab bar */}
       <div
         className="flex items-center justify-between px-3 py-2.5 border-b flex-shrink-0"
-        style={{ borderColor: 'var(--app-border)' }}
+        style={{ borderColor: 'var(--border)' }}
       >
         <div className="flex gap-1" role="tablist">
           {tabBtn('detail', 'Detail')}
@@ -61,8 +61,8 @@ export default function RightPanel({
         </div>
         <button
           onClick={onClose}
-          className="p-1.5 rounded-lg transition-colors hover:bg-[var(--app-surface)]"
-          style={{ color: 'var(--app-text-muted)' }}
+          className="p-1.5 rounded-lg transition-colors hover:bg-[var(--bg)]"
+          style={{ color: 'var(--text-secondary)' }}
           aria-label="Close panel"
         >
           <X size={16} />
@@ -76,7 +76,7 @@ export default function RightPanel({
             <SpotCard spot={selectedSpot} onUpvote={onUpvote} embedded />
           ) : (
             <div className="flex flex-col items-center justify-center h-full py-16">
-              <p className="text-sm text-center" style={{ color: 'var(--app-text-muted)' }}>
+              <p className="text-sm text-center" style={{ color: 'var(--text-secondary)' }}>
                 Click a marker on the map to see spot details
               </p>
             </div>
@@ -106,9 +106,9 @@ export default function RightPanel({
           {/* Drag handle */}
           <div
             className="flex justify-center pt-2 pb-1 flex-shrink-0"
-            style={{ background: 'var(--app-sidebar)' }}
+            style={{ background: 'var(--panel-bg)' }}
           >
-            <div className="w-8 h-1 rounded-full" style={{ background: 'var(--app-border)' }} />
+            <div className="w-8 h-1 rounded-full" style={{ background: 'var(--border)' }} />
           </div>
           {panelContent}
         </div>
@@ -119,7 +119,7 @@ export default function RightPanel({
   return (
     <div
       className="h-full flex-shrink-0 overflow-hidden transition-[width] duration-300"
-      style={{ width: isOpen ? '360px' : '0', borderLeft: '1px solid var(--app-border)' }}
+      style={{ width: isOpen ? '360px' : '0', borderLeft: '1px solid var(--border)' }}
       onTransitionEnd={onTransitionEnd}
     >
       <div style={{ width: '360px', height: '100%' }}>

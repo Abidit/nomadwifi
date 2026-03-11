@@ -112,7 +112,7 @@ export default function AddSpotForm({ lat, lng, onSpotAdded }: AddSpotFormProps)
       )}
 
       <div className="space-y-1.5">
-        <Label htmlFor="spot-name" className="text-sm font-medium" style={{ color: 'var(--app-text)' }}>
+        <Label htmlFor="spot-name" className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
           Name <span className="text-red-400">*</span>
         </Label>
         <Input
@@ -124,7 +124,7 @@ export default function AddSpotForm({ lat, lng, onSpotAdded }: AddSpotFormProps)
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="spot-description" className="text-sm font-medium" style={{ color: 'var(--app-text)' }}>
+        <Label htmlFor="spot-description" className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
           Description <span className="text-red-400">*</span>
         </Label>
         <Input
@@ -136,7 +136,7 @@ export default function AddSpotForm({ lat, lng, onSpotAdded }: AddSpotFormProps)
       </div>
 
       <div className="space-y-1.5">
-        <Label className="text-sm font-medium" style={{ color: 'var(--app-text)' }}>
+        <Label className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
           Wifi Speed <span className="text-red-400">*</span>
         </Label>
         <select
@@ -151,7 +151,7 @@ export default function AddSpotForm({ lat, lng, onSpotAdded }: AddSpotFormProps)
       </div>
 
       <div className="space-y-1.5">
-        <Label className="text-sm font-medium" style={{ color: 'var(--app-text)' }}>Noise Level</Label>
+        <Label className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>Noise Level</Label>
         <select
           value={noiseLevel}
           onChange={(e) => setNoiseLevel(e.target.value as NoiseLevel | '')}
@@ -165,7 +165,7 @@ export default function AddSpotForm({ lat, lng, onSpotAdded }: AddSpotFormProps)
       </div>
 
       <div className="space-y-1.5">
-        <Label className="text-sm font-medium" style={{ color: 'var(--app-text)' }}>Power Outlets</Label>
+        <Label className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>Power Outlets</Label>
         <select
           value={powerOutlets}
           onChange={(e) => setPowerOutlets(e.target.value as PowerOutlets | '')}
@@ -179,7 +179,7 @@ export default function AddSpotForm({ lat, lng, onSpotAdded }: AddSpotFormProps)
       </div>
 
       <div className="space-y-1.5">
-        <Label className="text-sm font-medium" style={{ color: 'var(--app-text)' }}>Power Backup</Label>
+        <Label className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>Power Backup</Label>
         <button
           type="button"
           onClick={() => setPowerBackup(!powerBackup)}
@@ -205,7 +205,7 @@ export default function AddSpotForm({ lat, lng, onSpotAdded }: AddSpotFormProps)
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="spot-city" className="text-sm font-medium" style={{ color: 'var(--app-text)' }}>City</Label>
+        <Label htmlFor="spot-city" className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>City</Label>
         <Input
           id="spot-city"
           value={city}
@@ -215,7 +215,7 @@ export default function AddSpotForm({ lat, lng, onSpotAdded }: AddSpotFormProps)
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="spot-country" className="text-sm font-medium" style={{ color: 'var(--app-text)' }}>Country</Label>
+        <Label htmlFor="spot-country" className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>Country</Label>
         <Input
           id="spot-country"
           value={country}

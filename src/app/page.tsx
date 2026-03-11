@@ -13,7 +13,7 @@ import { geocodeCity } from '@/lib/geocode'
 
 const Map = dynamic(() => import('@/components/Map'), {
   ssr: false,
-  loading: () => <div className="w-full h-full animate-pulse" style={{ background: 'var(--app-surface)' }} />,
+  loading: () => <div className="w-full h-full animate-pulse" style={{ background: 'var(--bg)' }} />,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }) as any
 
@@ -223,10 +223,10 @@ export default function HomePage() {
           <button
             onClick={() => setSidebarOpen(true)}
             className="absolute top-3 left-3 z-[500] rounded-xl shadow-md p-2.5 border"
-            style={{ background: 'var(--app-sidebar)', borderColor: 'var(--app-border)' }}
+            style={{ background: 'var(--sidebar-bg)', borderColor: 'var(--border)' }}
             aria-label="Open menu"
           >
-            <Menu size={19} style={{ color: 'var(--app-text)' }} />
+            <Menu size={19} style={{ color: 'var(--text-primary)' }} />
           </button>
         )}
 
@@ -253,11 +253,11 @@ export default function HomePage() {
         {!isMobile && (
           <button
             onClick={() => setCmdOpen(true)}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[500] rounded-full shadow-md px-4 py-2 text-xs border flex items-center gap-2 backdrop-blur-sm transition-colors hover:bg-[var(--app-surface)]"
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[500] rounded-full shadow-md px-4 py-2 text-xs border flex items-center gap-2 backdrop-blur-sm transition-colors hover:bg-[var(--bg)]"
             style={{
               background: 'rgba(255,255,255,0.85)',
-              borderColor: 'var(--app-border)',
-              color: 'var(--app-text-muted)',
+              borderColor: 'var(--border)',
+              color: 'var(--text-secondary)',
             }}
           >
             <kbd className="font-mono">⌘K</kbd> Quick search

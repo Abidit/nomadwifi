@@ -70,29 +70,29 @@ export default function Sidebar({
     `px-3 py-1 rounded-full text-xs font-medium cursor-pointer transition-all border ${
       active
         ? 'bg-[#222222] text-white border-[#222222]'
-        : 'border-[var(--app-border)] hover:border-[#717171]'
+        : 'border-[var(--border)] hover:border-[var(--text-secondary)]'
     }`
 
   const pillStyle = (active: boolean): React.CSSProperties =>
-    active ? {} : { color: 'var(--app-text-muted)' }
+    active ? {} : { color: 'var(--text-secondary)' }
 
   const content = (
-    <div className="flex flex-col h-full" style={{ background: 'var(--app-sidebar)' }}>
+    <div className="flex flex-col h-full" style={{ background: 'var(--sidebar-bg)' }}>
       {/* Header */}
       <div
         className="flex items-center justify-between h-14 px-3 flex-shrink-0 border-b"
-        style={{ borderColor: 'var(--app-border)' }}
+        style={{ borderColor: 'var(--border)' }}
       >
         <div className="flex items-center gap-2">
           <Wifi size={18} className="text-[#00A699]" />
-          <span className="font-bold text-base" style={{ color: 'var(--app-text)' }}>
+          <span className="font-bold text-base" style={{ color: 'var(--text-primary)' }}>
             NomadWifi
           </span>
         </div>
         <button
           onClick={isMobile ? onClose : onToggle}
-          className="p-1.5 rounded-lg transition-colors hover:bg-[var(--app-surface)]"
-          style={{ color: 'var(--app-text-muted)' }}
+          className="p-1.5 rounded-lg transition-colors hover:bg-[var(--bg)]"
+          style={{ color: 'var(--text-secondary)' }}
           aria-label={isMobile ? 'Close menu' : 'Collapse sidebar'}
         >
           {isMobile ? <X size={17} /> : <ChevronLeft size={17} />}
@@ -103,21 +103,21 @@ export default function Sidebar({
       <div className="px-3 pt-3 pb-2 flex-shrink-0">
         <div
           className="flex items-center gap-2 rounded-lg px-3 py-2 border"
-          style={{ background: 'var(--app-surface)', borderColor: 'var(--app-border)' }}
+          style={{ background: 'var(--bg)', borderColor: 'var(--border)' }}
         >
-          <Search size={14} className="flex-shrink-0" style={{ color: 'var(--app-text-muted)' }} />
+          <Search size={14} className="flex-shrink-0" style={{ color: 'var(--text-secondary)' }} />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search spots, cities..."
             className="flex-1 bg-transparent text-sm focus:outline-none min-w-0"
-            style={{ color: 'var(--app-text)' }}
+            style={{ color: 'var(--text-primary)' }}
           />
           {searchQuery && (
             <button
               onClick={() => onSearchChange('')}
-              style={{ color: 'var(--app-text-muted)' }}
+              style={{ color: 'var(--text-secondary)' }}
               aria-label="Clear search"
             >
               <X size={13} />
@@ -129,12 +129,12 @@ export default function Sidebar({
       {/* Filters */}
       <div
         className="px-3 pb-3 flex-shrink-0 border-b space-y-2.5"
-        style={{ borderColor: 'var(--app-border)' }}
+        style={{ borderColor: 'var(--border)' }}
       >
         <div>
           <p
             className="text-[10px] font-semibold uppercase tracking-wider mb-1.5"
-            style={{ color: 'var(--app-text-muted)' }}
+            style={{ color: 'var(--text-muted)' }}
           >
             Wifi Speed
           </p>
@@ -155,7 +155,7 @@ export default function Sidebar({
         <div>
           <p
             className="text-[10px] font-semibold uppercase tracking-wider mb-1.5"
-            style={{ color: 'var(--app-text-muted)' }}
+            style={{ color: 'var(--text-muted)' }}
           >
             Noise Level
           </p>
@@ -176,7 +176,7 @@ export default function Sidebar({
         <div>
           <p
             className="text-[10px] font-semibold uppercase tracking-wider mb-1.5"
-            style={{ color: 'var(--app-text-muted)' }}
+            style={{ color: 'var(--text-muted)' }}
           >
             Power
           </p>
@@ -201,7 +201,7 @@ export default function Sidebar({
 
       {/* Spot count */}
       <div className="px-3 py-2 flex-shrink-0">
-        <p className="text-[11px]" style={{ color: 'var(--app-text-muted)' }}>
+        <p className="text-[11px]" style={{ color: 'var(--text-muted)' }}>
           {sortedSpots.length} spot{sortedSpots.length !== 1 ? 's' : ''}
           {locationStatus === 'loading' && ' · Locating you...'}
           {locationStatus === 'success' && ' · 📍 by distance'}
@@ -227,17 +227,17 @@ export default function Sidebar({
               }}
               className="w-full text-left px-3 py-2.5 border-b transition-colors"
               style={{
-                borderColor: 'var(--app-border)',
-                background: isSelected ? 'var(--app-surface)' : 'transparent',
+                borderColor: 'var(--border)',
+                background: isSelected ? 'var(--bg)' : 'transparent',
               }}
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate" style={{ color: 'var(--app-text)' }}>
+                  <p className="text-sm font-medium truncate" style={{ color: 'var(--text-primary)' }}>
                     {spot.name}
                   </p>
                   {location && (
-                    <p className="text-xs truncate mt-0.5" style={{ color: 'var(--app-text-muted)' }}>
+                    <p className="text-xs truncate mt-0.5" style={{ color: 'var(--text-secondary)' }}>
                       {location}
                     </p>
                   )}
@@ -249,7 +249,7 @@ export default function Sidebar({
                     {spot.wifi_speed}
                   </span>
                   {dist !== null && (
-                    <span className="text-[10px]" style={{ color: 'var(--app-text-muted)' }}>
+                    <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>
                       {dist < 1 ? `${Math.round(dist * 1000)}m` : `${dist.toFixed(1)} km`}
                     </span>
                   )}
@@ -259,12 +259,11 @@ export default function Sidebar({
           )
         })}
         {sortedSpots.length === 0 && (
-          <p className="text-sm text-center py-8" style={{ color: 'var(--app-text-muted)' }}>
+          <p className="text-sm text-center py-8" style={{ color: 'var(--text-secondary)' }}>
             No spots found
           </p>
         )}
       </div>
-
     </div>
   )
 
@@ -287,7 +286,7 @@ export default function Sidebar({
   return (
     <div
       className="h-full flex-shrink-0 overflow-hidden transition-[width] duration-200"
-      style={{ width: isOpen ? '280px' : '40px', borderRight: '1px solid var(--app-border)' }}
+      style={{ width: isOpen ? '280px' : '40px', borderRight: '1px solid var(--border)' }}
       onTransitionEnd={onTransitionEnd}
     >
       {isOpen ? (
@@ -295,12 +294,12 @@ export default function Sidebar({
       ) : (
         <div
           className="h-full flex flex-col items-center pt-3"
-          style={{ background: 'var(--app-sidebar)' }}
+          style={{ background: 'var(--sidebar-bg)' }}
         >
           <button
             onClick={onToggle}
-            className="p-1.5 rounded-lg transition-colors hover:bg-[var(--app-surface)]"
-            style={{ color: 'var(--app-text-muted)' }}
+            className="p-1.5 rounded-lg transition-colors hover:bg-[var(--bg)]"
+            style={{ color: 'var(--text-secondary)' }}
             aria-label="Expand sidebar"
           >
             <ChevronRight size={17} />

@@ -80,8 +80,9 @@ export default function CommandPalette({ spots, isOpen, onClose, onSpotSelect }:
           zIndex: 9999,
           borderRadius: '12px',
           overflow: 'hidden',
-          boxShadow: '0 25px 60px rgba(0, 0, 0, 0.4)',
-          background: '#F0F8FF',
+          border: '1px solid #ebebeb',
+          boxShadow: '0 8px 30px rgba(0, 0, 0, 0.12)',
+          background: '#ffffff',
         }}
       >
         {/* Search input */}
@@ -91,10 +92,10 @@ export default function CommandPalette({ spots, isOpen, onClose, onSpotSelect }:
             alignItems: 'center',
             gap: '12px',
             padding: '16px 20px',
-            borderBottom: '1px solid var(--app-border)',
+            borderBottom: '1px solid var(--border)',
           }}
         >
-          <Search size={18} style={{ color: 'var(--app-text-muted)', flexShrink: 0 }} />
+          <Search size={18} style={{ color: 'var(--text-secondary)', flexShrink: 0 }} />
           <input
             ref={inputRef}
             type="text"
@@ -107,7 +108,7 @@ export default function CommandPalette({ spots, isOpen, onClose, onSpotSelect }:
               border: 'none',
               outline: 'none',
               fontSize: '16px',
-              color: 'var(--app-text)',
+              color: 'var(--text-primary)',
               minWidth: 0,
             }}
           />
@@ -116,8 +117,8 @@ export default function CommandPalette({ spots, isOpen, onClose, onSpotSelect }:
               fontSize: '11px',
               padding: '2px 6px',
               borderRadius: '4px',
-              border: '1px solid var(--app-border)',
-              color: 'var(--app-text-muted)',
+              border: '1px solid var(--border)',
+              color: 'var(--text-secondary)',
               fontFamily: 'monospace',
               flexShrink: 0,
             }}
@@ -134,7 +135,7 @@ export default function CommandPalette({ spots, isOpen, onClose, onSpotSelect }:
                 fontSize: '14px',
                 textAlign: 'center',
                 padding: '32px 20px',
-                color: 'var(--app-text-muted)',
+                color: 'var(--text-secondary)',
               }}
             >
               {query ? 'No spots found' : 'Start typing to search'}
@@ -150,18 +151,18 @@ export default function CommandPalette({ spots, isOpen, onClose, onSpotSelect }:
                   width: '100%',
                   textAlign: 'left',
                   padding: '12px 20px',
-                  background: i === activeIndex ? 'var(--app-surface)' : 'transparent',
+                  background: i === activeIndex ? 'var(--bg)' : 'transparent',
                   border: 'none',
-                  borderBottom: '1px solid var(--app-border)',
+                  borderBottom: '1px solid var(--border)',
                   cursor: 'pointer',
                   transition: 'background 0.1s',
                 }}
               >
-                <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--app-text)', margin: 0 }}>
+                <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', margin: 0 }}>
                   {spot.name}
                 </p>
                 {(spot.city || spot.country) && (
-                  <p style={{ fontSize: '12px', color: 'var(--app-text-muted)', margin: '2px 0 0' }}>
+                  <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: '2px 0 0' }}>
                     {[spot.city, spot.country].filter(Boolean).join(', ')}
                   </p>
                 )}
@@ -177,9 +178,9 @@ export default function CommandPalette({ spots, isOpen, onClose, onSpotSelect }:
             alignItems: 'center',
             gap: '16px',
             padding: '10px 20px',
-            borderTop: '1px solid var(--app-border)',
+            borderTop: '1px solid var(--border)',
             fontSize: '12px',
-            color: 'var(--app-text-muted)',
+            color: 'var(--text-secondary)',
           }}
         >
           <span><kbd style={{ fontFamily: 'monospace' }}>↑↓</kbd> navigate</span>
