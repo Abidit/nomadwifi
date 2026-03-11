@@ -7,6 +7,7 @@ import type { Spot } from '@/types/spot'
 
 export interface MapHandle {
   flyTo: (lat: number, lng: number, zoom?: number) => void
+  invalidateSize: () => void
 }
 
 interface MapProps {
@@ -49,6 +50,9 @@ const Map = forwardRef<MapHandle, MapProps>(function Map(
   useImperativeHandle(ref, () => ({
     flyTo: (lat, lng, zoom = 12) => {
       mapRef.current?.flyTo([lat, lng], zoom, { animate: true, duration: 1.2 })
+    },
+    invalidateSize: () => {
+      mapRef.current?.invalidateSize()
     },
   }), [])
 

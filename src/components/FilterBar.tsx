@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import type { WifiSpeed } from '@/types/spot'
+import type { WifiSpeed, NoiseLevel } from '@/types/spot'
 
 interface FilterBarProps {
-  onFilterChange: (speed: WifiSpeed | 'all', powerOnly: boolean) => void
+  onFilterChange: (speed: WifiSpeed | 'all', powerOnly: boolean, noise: NoiseLevel | 'all') => void
   className?: string
 }
 
@@ -15,19 +15,32 @@ const SPEEDS: Array<{ value: WifiSpeed | 'all'; label: string }> = [
   { value: 'fast', label: 'Fast' },
 ]
 
+const NOISE_LEVELS: Array<{ value: NoiseLevel | 'all'; label: string }> = [
+  { value: 'all', label: 'All' },
+  { value: 'quiet', label: 'Quiet' },
+  { value: 'moderate', label: 'Moderate' },
+  { value: 'loud', label: 'Loud' },
+]
+
 export default function FilterBar({ onFilterChange, className }: FilterBarProps) {
   const [activeSpeed, setActiveSpeed] = useState<WifiSpeed | 'all'>('all')
   const [powerOnly, setPowerOnly] = useState(false)
+  const [activeNoise, setActiveNoise] = useState<NoiseLevel | 'all'>('all')
 
   const handleSpeedChange = (speed: WifiSpeed | 'all') => {
     setActiveSpeed(speed)
-    onFilterChange(speed, powerOnly)
+    onFilterChange(speed, powerOnly, activeNoise)
   }
 
   const handlePowerToggle = () => {
     const next = !powerOnly
     setPowerOnly(next)
-    onFilterChange(activeSpeed, next)
+    onFilterChange(activeSpeed, next, activeNoise)
+  }
+
+  const handleNoiseChange = (noise: NoiseLevel | 'all') => {
+    setActiveNoise(noise)
+    onFilterChange(activeSpeed, powerOnly, noise)
   }
 
   return (
@@ -56,6 +69,20 @@ export default function FilterBar({ onFilterChange, className }: FilterBarProps)
       >
         ⚡ Power backup
       </button>
+      <div className="w-px h-5 bg-[#ebebeb] mx-1" />
+      {NOISE_LEVELS.map((n) => (
+        <button
+          key={n.value}
+          onClick={() => handleNoiseChange(n.value)}
+          className={
+            activeNoise === n.value
+              ? 'bg-[#222222] text-white rounded-full px-4 py-1.5 text-sm font-medium transition-all'
+              : 'text-[#717171] hover:bg-[#f7f7f7] rounded-full px-4 py-1.5 text-sm transition-all'
+          }
+        >
+          {n.label}
+        </button>
+      ))}
     </div>
   )
 }

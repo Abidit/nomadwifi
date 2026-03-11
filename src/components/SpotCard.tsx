@@ -7,8 +7,9 @@ import type { Spot } from '@/types/spot'
 
 interface SpotCardProps {
   spot: Spot
-  onClose: () => void
+  onClose?: () => void
   onUpvote: (spotId: string) => void
+  embedded?: boolean
 }
 
 function getRelativeTime(dateString: string): string {
@@ -28,7 +29,19 @@ const SPEED_CONFIG = {
   fast: { label: 'Fast wifi', className: 'bg-teal-50 text-teal-600' },
 }
 
-export default function SpotCard({ spot, onClose, onUpvote }: SpotCardProps) {
+const NOISE_CONFIG = {
+  quiet: { label: '🤫 Quiet', className: 'bg-teal-50 text-teal-600' },
+  moderate: { label: '💬 Moderate', className: 'bg-amber-50 text-amber-500' },
+  loud: { label: '🔊 Loud', className: 'bg-red-50 text-red-500' },
+}
+
+const OUTLETS_CONFIG = {
+  none: { label: '🔋 No outlets', className: 'bg-gray-50 text-gray-400' },
+  limited: { label: '⚡ Limited outlets', className: 'bg-amber-50 text-amber-500' },
+  plenty: { label: '🔌 Plenty of outlets', className: 'bg-teal-50 text-teal-600' },
+}
+
+export default function SpotCard({ spot, onClose, onUpvote, embedded }: SpotCardProps) {
   const speed = SPEED_CONFIG[spot.wifi_speed]
   const location = [spot.city, spot.country].filter(Boolean).join(', ')
   const [hasVoted, setHasVoted] = useState(false)
@@ -64,15 +77,17 @@ export default function SpotCard({ spot, onClose, onUpvote }: SpotCardProps) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-5 w-72 border border-[#ebebeb]">
+    <div className={embedded ? 'w-full' : 'bg-white rounded-xl shadow-lg p-5 w-72 border border-[#ebebeb]'}>
       <div className="flex items-start justify-between mb-1">
         <h3 className="font-semibold text-[#222222] leading-tight pr-2">{spot.name}</h3>
-        <button
-          onClick={onClose}
-          className="text-[#717171] hover:text-[#222222] transition-colors flex-shrink-0 -mt-0.5"
-        >
-          <X size={18} />
-        </button>
+        {!embedded && onClose && (
+          <button
+            onClick={onClose}
+            className="text-[#717171] hover:text-[#222222] transition-colors flex-shrink-0 -mt-0.5"
+          >
+            <X size={18} />
+          </button>
+        )}
       </div>
 
       {location && (
@@ -95,6 +110,16 @@ export default function SpotCard({ spot, onClose, onUpvote }: SpotCardProps) {
         >
           {spot.power_backup ? '⚡ Power backup' : 'No backup'}
         </span>
+        {spot.noise_level && (
+          <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${NOISE_CONFIG[spot.noise_level].className}`}>
+            {NOISE_CONFIG[spot.noise_level].label}
+          </span>
+        )}
+        {spot.power_outlets && (
+          <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${OUTLETS_CONFIG[spot.power_outlets].className}`}>
+            {OUTLETS_CONFIG[spot.power_outlets].label}
+          </span>
+        )}
       </div>
 
       {spot.description && (
